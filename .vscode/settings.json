@@ -1,0 +1,11 @@
+{
+    "cmake.useCMakePresets": "always",
+    "cmake.configureOnOpen": true,
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "C_Cpp.default.cStandard": "c17",
+    "files.associations": {
+        "*.h": "c"
+    },
+    "editor.formatOnSave": true,
+    "cmake.sourceDirectory": "${workspaceFolder}/example"
+}
