@@ -1,0 +1,38 @@
+{
+    "version": 3,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 23,
+        "patch": 0
+    },
+    "configurePresets": [
+
+        {
+            "name": "stm32-gcc-base",
+            "hidden": true,
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "toolchainFile": "${sourceDir}/examples/stm32/cmake/arm-none-eabi-gcc.cmake",
+            "cacheVariables": {
+                "W25Q16JVSSIQ_BUILD_EXAMPLES": "ON"
+            }
+        },
+
+        {
+            "name": "stm32-gcc-debug",
+            "inherits": "stm32-gcc-base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE":"Debug"
+            }
+            
+        }
+    ],
+
+    "buildPresets": [
+
+        {
+            "name": "stm32-gcc-debug",
+            "configurePreset": "stm32-gcc-debug"
+        }
+    ]
+}

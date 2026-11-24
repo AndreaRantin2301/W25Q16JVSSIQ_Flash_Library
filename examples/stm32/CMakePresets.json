@@ -1,0 +1,63 @@
+{
+    "version": 3,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 23,
+        "patch": 0
+    },
+    "configurePresets": [
+
+        {
+            "name": "arm-gcc-base",
+            "hidden": true,
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "toolchainFile": "${sourceDir}/cmake/arm-none-eabi-gcc.cmake"
+        },
+
+        {
+            "name": "arm-gcc-debug",
+            "inherits": "arm-gcc-base",
+            "displayName": "ARM GCC Debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+
+        {
+            "name": "arm-gcc-release",
+            "inherits": "arm-gcc-base",
+            "displayName": "ARM GCC Release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+
+        {
+            "name": "arm-gcc-release-size",
+            "inherits": "arm-gcc-base",
+            "displayName": "ARM GCC Release for Size",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "MinSizeRel"
+            }
+        }
+    ],
+
+    "buildPresets": [
+
+        {
+            "name": "arm-gcc-debug",
+            "configurePreset": "arm-gcc-debug"
+        },
+
+        {
+            "name": "arm-gcc-release",
+            "configurePreset": "arm-gcc-release"
+        },
+
+        {
+            "name": "arm-gcc-release-size",
+            "configurePreset": "arm-gcc-release-size"
+        }
+    ]
+}
