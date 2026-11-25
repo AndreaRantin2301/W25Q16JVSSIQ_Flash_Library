@@ -24,6 +24,18 @@ set_target_properties(${EXAMPLE_NAME}
     PROPERTIES SUFFIX ".elf"
 )
 
+target_sources(${EXAMPLE_NAME}
+    PRIVATE
+        Core/Src/example.c
+    PRIVATE
+        FILE_SET privateExampleHeaders
+        TYPE HEADERS
+        BASE_DIRS
+            Core/Inc
+        FILES
+            Core/Inc/example.h
+)
+
 add_subdirectory(cmake/stm32cubemx)
 
 if(NOT TARGET AndreaRantin::W25Q16JVSSIQ_Library)
