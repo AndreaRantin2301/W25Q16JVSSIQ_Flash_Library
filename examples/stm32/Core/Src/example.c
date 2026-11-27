@@ -69,10 +69,30 @@ void User_Setup(void) {
    spiCfgStruct.chipSelect_Fun = SPI_MoveFlashCS;
    spiCfgStruct.spiTransmit_Fun = SPI_WriteToFlash;
    spiCfgStruct.spiReceive_Fun = SPI_ReadFromFlash;
+   spiCfgStruct.getTick_Fun = HAL_GetTick;
 
     checkError = W25Q16JVSSIQ_Config_SpiFunctions(&spiCfgStruct);
     if(checkError != W25Q16JVSSIQ_OK) {
         //Print error or do something here
+    }
+
+    checkError = W25Q16JVSSIQ_ResetChip();
+    if(checkError != W25Q16JVSSIQ_OK) {
+        while(1); //TODO LEVARE STA SCHIFEZZA
+    }
+
+    W25Q16JVSSIQ_DeviceIdentification identificationStruct = {0};
+
+    checkError = W25Q16JVSSIQ_Read_DeviceIdentification(&identificationStruct);
+    if(checkError != W25Q16JVSSIQ_OK) {
+        while(1); //TODO LEVARE STA SCHIFEZZA
+    }
+
+    W25Q16JVSSIQ_UniqueId uidStruct = {0};
+
+    checkError = W25Q16JVSSIQ_Read_UniqueId(&uidStruct);
+    if(checkError != W25Q16JVSSIQ_OK) {
+        while(1); //TODO LEVARE STA SCHIFEZZA
     }
 }
     

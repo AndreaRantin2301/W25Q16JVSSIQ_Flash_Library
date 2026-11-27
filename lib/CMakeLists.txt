@@ -16,6 +16,13 @@ add_library(AndreaRantin::${LIBRARY_NAME} ALIAS ${LIBRARY_NAME})
 target_sources(${LIBRARY_NAME}
     PRIVATE
         src/w25q16jvssiq.c
+    PRIVATE
+        FILE_SET libPrivateHeaders
+        TYPE HEADERS
+        BASE_DIRS
+            src
+        FILES
+            src/w25q16jvssiq_private.h
     PUBLIC
         FILE_SET libHeaders
         TYPE HEADERS

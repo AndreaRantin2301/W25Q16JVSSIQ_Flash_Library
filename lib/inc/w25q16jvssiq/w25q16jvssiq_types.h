@@ -22,7 +22,16 @@ typedef enum {
     W25Q16JVSSIQ_ERROR_NULL_TX_FUN,
     W25Q16JVSSIQ_ERROR_NULL_RX_FUN,
     W25Q16JVSSIQ_ERROR_NULL_DELAY_FUN,
+    W25Q16JVSSIQ_ERROR_NULL_GET_TICK_FUN,
     W25Q16JVSSIQ_ERROR_NULL_SPI_CFG_STRUCT,
+    W25Q16JVSSIQ_ERROR_WRITE_INSTRUCTION,
+    W25Q16JVSSIQ_ERROR_NULL_IDENTIFICATION_STRUCT,
+    W25Q16JVSSIQ_ERROR_NULL_UID_STRUCT,
+    W25Q16JVSSIQ_ERROR_READ_JEDEC_ID,
+    W25Q16JVSSIQ_ERROR_READ_UID,
+    W25Q16JVSSIQ_ERROR_NULL_READ_VALUE,
+    W25Q16JVSSIQ_ERROR_READ_REGISTER8,
+    W25Q16JVSSIQ_ERROR_STATUS_REG1_TIMEOUT,
 }W25Q16JVSSIQ_Status;
 
 /**
@@ -38,6 +47,25 @@ typedef enum {
     W25Q16JVSSIQ_SPI_BUSY,
     W25Q16JVSSIQ_SPI_TIMEOUT,
 }W25Q16JVSSIQ_SpiStatus;
+
+/**
+* @brief Structure containing the manufacturer and device specification(As per datashseet). 
+* This contains the JEDEC Id aswell as the 2 device ID bytes(Memory type and capacity).
+* This structure can be read into with the @ref W25Q16JVSSIQ_Read_DeviceIdentification function
+*/
+typedef struct {
+    uint8_t jedecId; /*<! JEDEC Id.*/
+    uint8_t memoryType; /*<! Memory type of the device.*/
+    uint8_t capacity; /*<! Capacity of the device*/
+}W25Q16JVSSIQ_DeviceIdentification;
+
+/**
+* @brief "Utility" structure used to contain the device unique id.
+* This structure can be read into with the @ref W25Q16JVSSIQ_Read_UniqueId function
+*/
+typedef struct {
+    uint8_t uid[8]; /*<! Device unique id*/
+}W25Q16JVSSIQ_UniqueId;
 
 /**
 * @brief Pointer to the function that controls the chip select pin for the flash. Note that as this flash is active LOW,
@@ -75,14 +103,21 @@ typedef W25Q16JVSSIQ_SpiStatus (*SpiReceive_Fun)(uint8_t* rxData, uint16_t lengt
 typedef void (*DelayFun)(uint32_t delay);
 
 /**
+* @brief Pointer to a function that gets the current tick of the system(In milliseconds)
+* @return Returns the tick elapsed since startup in milliseconds
+*/
+typedef uint32_t (*GetTickFun)(void);
+
+/**
 * @brief Structure that contains all the function pointers needed by the library to work
 * 
 */
 typedef struct {
-    ChipSelect_Fun chipSelect_Fun; /*!< Pointer to the function that controls the chip select pin for the flash.*/
-    SpiTransmit_Fun spiTransmit_Fun; /*< Pointer to the function that transmits via SPI.*/
-    SpiReceive_Fun spiReceive_Fun; /*< Pointer to the function that receives via SPI.*/
-    DelayFun delay_Fun; /*< Pointer to a function that delays execution of the code.*/
+    ChipSelect_Fun chipSelect_Fun; /*<! Pointer to the function that controls the chip select pin for the flash.*/
+    SpiTransmit_Fun spiTransmit_Fun; /*<! Pointer to the function that transmits via SPI.*/
+    SpiReceive_Fun spiReceive_Fun; /*<! Pointer to the function that receives via SPI.*/
+    DelayFun delay_Fun; /*<! Pointer to a function that delays execution of the code.*/
+    GetTickFun getTick_Fun; /*<! Pointer to a function that retrieves the current tick of the system in milliseconds */
 }W25Q16JVSSIQ_SpiConfig_Struct;
 
 #endif /* W25Q16JVSSIQ_TYPES_H */
